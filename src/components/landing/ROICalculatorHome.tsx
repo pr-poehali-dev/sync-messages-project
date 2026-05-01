@@ -1,60 +1,49 @@
 import { motion } from "framer-motion"
 import { useState } from "react"
-import { TrendingUp, Target, Briefcase, Palette, Home, BarChart3 } from "lucide-react"
+import { TrendingUp, Bike, Zap, BarChart3 } from "lucide-react"
+import AnimatedButton from "./AnimatedButton"
 
-const businessTypes = [
+const transportTypes = [
   {
-    id: "retail",
-    name: "Ритейл",
-    icon: <Briefcase className="w-6 h-6" />,
-    multiplier: 3.2,
-    description: "E-commerce и магазины",
+    id: "scooter",
+    name: "Самокат",
+    icon: <Zap className="w-6 h-6" />,
+    costPerMin: 5,
+    description: "Электросамокат",
   },
   {
-    id: "real-estate",
-    name: "Недвижимость",
-    icon: <Home className="w-6 h-6" />,
-    multiplier: 4.1,
-    description: "Агенты и управление",
-  },
-  {
-    id: "artist",
-    name: "Креатив",
-    icon: <Palette className="w-6 h-6" />,
-    multiplier: 2.8,
-    description: "Блогеры и артисты",
-  },
-  {
-    id: "professional",
-    name: "B2B услуги",
-    icon: <Target className="w-6 h-6" />,
-    multiplier: 3.7,
-    description: "Консалтинг и сервисы",
+    id: "bike",
+    name: "Велосипед",
+    icon: <Bike className="w-6 h-6" />,
+    costPerMin: 3,
+    description: "Обычный велосипед",
   },
 ]
 
-// Функция форматирования чисел с пробелами (русская локаль)
-const formatRub = (num: number) => {
-  return num.toLocaleString('ru-RU')
-}
+const subscriptionTypes = [
+  { id: "permin", name: "Поминутно", discount: 1 },
+  { id: "day", name: "День 299₽", discount: 0.6 },
+  { id: "month", name: "Месяц 1990₽", discount: 0.3 },
+]
 
 export default function ROICalculatorHome() {
-  // Бюджет в рублях (100 000 - 2 500 000)
-  const [selectedBudget, setSelectedBudget] = useState(500000)
-  const [selectedBusiness, setSelectedBusiness] = useState("retail")
+  const [tripsPerWeek, setTripsPerWeek] = useState(10)
+  const [tripDuration, setTripDuration] = useState(15)
+  const [selectedTransport, setSelectedTransport] = useState("scooter")
+  const [selectedSub, setSelectedSub] = useState("permin")
 
-  const selectedBusinessType = businessTypes.find((b) => b.id === selectedBusiness)
-  const multiplier = selectedBusinessType?.multiplier || 3.2
+  const transport = transportTypes.find((t) => t.id === selectedTransport)
+  const sub = subscriptionTypes.find((s) => s.id === selectedSub)
+  const costPerMin = transport?.costPerMin || 5
+  const discount = sub?.discount || 1
 
-  const calculateROI = (budget: number) => {
-    const baseReturn = budget * multiplier
-    const scaleFactor = budget / 1000000
-    return Math.round(baseReturn * (1 + scaleFactor * 0.3))
-  }
+  const monthlyTrips = tripsPerWeek * 4
+  const costPerTrip = tripDuration * costPerMin * discount
+  const monthlyCost = Math.round(monthlyTrips * costPerTrip)
 
-  const calculateMonthlyRevenue = (budget: number) => {
-    return Math.round(calculateROI(budget) / 12)
-  }
+  const taxiCostPerTrip = tripDuration * 25
+  const monthlySaving = Math.round(monthlyTrips * taxiCostPerTrip - monthlyCost)
+  const co2Saved = Math.round(monthlyTrips * tripDuration * 0.12)
 
   return (
     <section className="py-24 bg-black relative backdrop-blur-sm">
@@ -66,23 +55,22 @@ export default function ROICalculatorHome() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">Рассчитайте ROI</h2>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">Посчитайте экономию</h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Узнайте, какую выручку вы можете получить с нашими маркетинговыми стратегиями
+            Узнайте, сколько вы сэкономите по сравнению с такси и личным автомобилем
           </p>
         </motion.div>
 
         <div className="bg-gray-900/40 border border-gray-700/30 rounded-3xl p-8 backdrop-blur-sm relative overflow-hidden">
-          {/* Subtle animated background */}
           <motion.div
             className="absolute inset-0 opacity-20"
             animate={{
               background: [
-                "radial-gradient(circle at 20% 20%, rgba(59,130,246,0.1) 0%, transparent 50%)",
-                "radial-gradient(circle at 80% 80%, rgba(147,51,234,0.1) 0%, transparent 50%)",
-                "radial-gradient(circle at 20% 80%, rgba(34,197,94,0.1) 0%, transparent 50%)",
-                "radial-gradient(circle at 80% 20%, rgba(249,115,22,0.1) 0%, transparent 50%)",
-                "radial-gradient(circle at 20% 20%, rgba(59,130,246,0.1) 0%, transparent 50%)",
+                "radial-gradient(circle at 20% 20%, rgba(34,197,94,0.1) 0%, transparent 50%)",
+                "radial-gradient(circle at 80% 80%, rgba(16,185,129,0.1) 0%, transparent 50%)",
+                "radial-gradient(circle at 20% 80%, rgba(20,184,166,0.1) 0%, transparent 50%)",
+                "radial-gradient(circle at 80% 20%, rgba(34,197,94,0.1) 0%, transparent 50%)",
+                "radial-gradient(circle at 20% 20%, rgba(34,197,94,0.1) 0%, transparent 50%)",
               ],
             }}
             transition={{ duration: 15, repeat: Infinity }}
@@ -91,33 +79,29 @@ export default function ROICalculatorHome() {
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Controls */}
             <div className="space-y-8">
-              {/* Business Type Selection */}
+              {/* Transport Type */}
               <div>
-                <label className="block text-lg font-medium text-white mb-4">Выберите тип бизнеса</label>
+                <label className="block text-lg font-medium text-white mb-4">Тип транспорта</label>
                 <div className="grid grid-cols-2 gap-3">
-                  {businessTypes.map((business) => (
+                  {transportTypes.map((t) => (
                     <motion.button
-                      key={business.id}
+                      key={t.id}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      onClick={() => setSelectedBusiness(business.id)}
+                      onClick={() => setSelectedTransport(t.id)}
                       className={`p-4 rounded-xl border transition-all duration-200 text-left ${
-                        selectedBusiness === business.id
-                          ? "bg-blue-500/20 border-blue-500/50 text-white"
+                        selectedTransport === t.id
+                          ? "bg-green-500/20 border-green-500/50 text-white"
                           : "bg-gray-800/50 border-gray-700/50 text-gray-300 hover:border-gray-600/50"
                       }`}
                     >
                       <div className="flex items-center space-x-3 mb-2">
-                        <div
-                          className={`p-2 rounded-lg ${
-                            selectedBusiness === business.id ? "bg-blue-500/30" : "bg-gray-700/50"
-                          }`}
-                        >
-                          {business.icon}
+                        <div className={`p-2 rounded-lg ${selectedTransport === t.id ? "bg-green-500/30" : "bg-gray-700/50"}`}>
+                          {t.icon}
                         </div>
                         <div>
-                          <div className="font-medium">{business.name}</div>
-                          <div className="text-xs opacity-70">{business.description}</div>
+                          <div className="font-medium">{t.name}</div>
+                          <div className="text-xs opacity-70">{t.description}</div>
                         </div>
                       </div>
                     </motion.button>
@@ -125,125 +109,173 @@ export default function ROICalculatorHome() {
                 </div>
               </div>
 
-              {/* Budget Slider */}
+              {/* Subscription */}
               <div>
-                <label className="block text-lg font-medium text-white mb-4">Месячный бюджет на маркетинг</label>
-                <div className="relative">
-                  <input
-                    type="range"
-                    min="100000"
-                    max="2500000"
-                    step="50000"
-                    value={selectedBudget}
-                    onChange={(e) => setSelectedBudget(Number(e.target.value))}
-                    className="w-full h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                    style={{
-                      background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${((selectedBudget - 100000) / (2500000 - 100000)) * 100}%, #374151 ${((selectedBudget - 100000) / (2500000 - 100000)) * 100}%, #374151 100%)`,
-                    }}
-                  />
-                  <div className="flex justify-between text-sm text-gray-400 mt-2">
-                    <span>100 тыс.</span>
-                    <span>2.5 млн</span>
-                  </div>
-                </div>
-                <div className="text-center mt-4">
-                  <span className="text-3xl font-bold text-white">{formatRub(selectedBudget)} &#8381;</span>
-                  <span className="text-gray-400 ml-2">в месяц</span>
+                <label className="block text-lg font-medium text-white mb-4">Тариф</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {subscriptionTypes.map((s) => (
+                    <motion.button
+                      key={s.id}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setSelectedSub(s.id)}
+                      className={`p-3 rounded-xl border transition-all duration-200 text-center text-sm ${
+                        selectedSub === s.id
+                          ? "bg-green-500/20 border-green-500/50 text-white"
+                          : "bg-gray-800/50 border-gray-700/50 text-gray-300 hover:border-gray-600/50"
+                      }`}
+                    >
+                      {s.name}
+                    </motion.button>
+                  ))}
                 </div>
               </div>
 
-              {/* Data Disclaimer */}
+              {/* Trips per week slider */}
+              <div>
+                <label className="block text-lg font-medium text-white mb-4">Поездок в неделю</label>
+                <input
+                  type="range"
+                  min="1"
+                  max="30"
+                  step="1"
+                  value={tripsPerWeek}
+                  onChange={(e) => setTripsPerWeek(Number(e.target.value))}
+                  className="w-full h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                  style={{
+                    background: `linear-gradient(to right, #22c55e 0%, #22c55e ${((tripsPerWeek - 1) / 29) * 100}%, #374151 ${((tripsPerWeek - 1) / 29) * 100}%, #374151 100%)`,
+                  }}
+                />
+                <div className="flex justify-between text-sm text-gray-400 mt-2">
+                  <span>1</span>
+                  <span className="text-white font-bold text-lg">{tripsPerWeek} поездок</span>
+                  <span>30</span>
+                </div>
+              </div>
+
+              {/* Trip duration slider */}
+              <div>
+                <label className="block text-lg font-medium text-white mb-4">Длительность поездки</label>
+                <input
+                  type="range"
+                  min="5"
+                  max="60"
+                  step="5"
+                  value={tripDuration}
+                  onChange={(e) => setTripDuration(Number(e.target.value))}
+                  className="w-full h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                  style={{
+                    background: `linear-gradient(to right, #10b981 0%, #10b981 ${((tripDuration - 5) / 55) * 100}%, #374151 ${((tripDuration - 5) / 55) * 100}%, #374151 100%)`,
+                  }}
+                />
+                <div className="flex justify-between text-sm text-gray-400 mt-2">
+                  <span>5 мин</span>
+                  <span className="text-white font-bold text-lg">{tripDuration} мин</span>
+                  <span>60 мин</span>
+                </div>
+              </div>
+
               <div className="bg-gray-800/30 border border-gray-700/50 rounded-xl p-4">
                 <div className="flex items-center space-x-3 mb-2">
-                  <BarChart3 className="w-5 h-5 text-blue-400" />
-                  <span className="text-sm font-medium text-white">На основе реальных данных</span>
+                  <BarChart3 className="w-5 h-5 text-green-400" />
+                  <span className="text-sm font-medium text-white">Сравниваем с такси</span>
                 </div>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  Прогнозы основаны на реальных показателях наших клиентов из аналогичных
-                  отраслей и бюджетных категорий. Индивидуальные результаты могут отличаться.
+                  Расчёт основан на средней стоимости такси 25 ₽/мин в городе. Реальная экономия может быть выше.
                 </p>
               </div>
             </div>
 
             {/* Results */}
-            <div className="space-y-8">
-              {/* ROI Circle */}
+            <div className="space-y-6">
+              {/* Big savings circle */}
               <div className="relative w-48 h-48 mx-auto">
                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="35"
-                    stroke="currentColor"
-                    strokeWidth="6"
-                    fill="none"
-                    className="text-gray-700"
-                  />
+                  <circle cx="50" cy="50" r="35" stroke="currentColor" strokeWidth="6" fill="none" className="text-gray-700" />
                   <motion.circle
                     cx="50"
                     cy="50"
                     r="35"
-                    stroke="url(#gradient)"
+                    stroke="url(#greenGradient)"
                     strokeWidth="6"
                     fill="none"
                     strokeLinecap="round"
                     initial={{ strokeDasharray: "0 219.8" }}
                     animate={{
-                      strokeDasharray: `${Math.min((calculateROI(selectedBudget) / (selectedBudget * 8)) * 219.8, 219.8)} 219.8`,
+                      strokeDasharray: `${Math.min((monthlySaving / (monthlyCost + monthlySaving)) * 219.8, 219.8)} 219.8`,
                     }}
                     transition={{ duration: 1, ease: "easeOut" }}
                   />
                   <defs>
-                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#3b82f6" />
-                      <stop offset="50%" stopColor="#8b5cf6" />
-                      <stop offset="100%" stopColor="#06d6a0" />
+                    <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#22c55e" />
+                      <stop offset="50%" stopColor="#10b981" />
+                      <stop offset="100%" stopColor="#14b8a6" />
                     </linearGradient>
                   </defs>
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <motion.div
-                      key={`${selectedBudget}-${selectedBusiness}`}
+                      key={`${tripsPerWeek}-${tripDuration}-${selectedTransport}-${selectedSub}`}
                       initial={{ scale: 0.8, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       className="text-2xl font-bold text-white"
                     >
-                      {Math.round((calculateROI(selectedBudget) / selectedBudget) * 100)}%
+                      {Math.round((monthlySaving / Math.max(monthlyCost + monthlySaving, 1)) * 100)}%
                     </motion.div>
-                    <div className="text-gray-400 text-sm">ROI</div>
+                    <div className="text-gray-400 text-sm">Экономия</div>
                   </div>
                 </div>
               </div>
 
-              {/* Revenue Cards */}
+              {/* Result Cards */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gray-800/50 rounded-2xl p-6 border border-gray-700/50 text-center">
-                  <div className="w-8 h-8 text-green-400 mx-auto mb-2 flex items-center justify-center text-2xl font-bold">&#8381;</div>
+                  <div className="w-8 h-8 text-green-400 mx-auto mb-2 flex items-center justify-center text-2xl font-bold">₽</div>
                   <motion.div
-                    key={`monthly-${selectedBudget}-${selectedBusiness}`}
+                    key={`cost-${tripsPerWeek}-${tripDuration}-${selectedTransport}-${selectedSub}`}
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     className="text-2xl font-bold text-white mb-1"
                   >
-                    {formatRub(calculateMonthlyRevenue(selectedBudget))}
+                    {monthlyCost.toLocaleString("ru-RU")}
                   </motion.div>
-                  <div className="text-gray-400 text-sm">Выручка/мес</div>
+                  <div className="text-gray-400 text-sm">GreenWay/мес</div>
                 </div>
 
-                <div className="bg-gray-800/50 rounded-2xl p-6 border border-gray-700/50 text-center">
-                  <TrendingUp className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+                <div className="bg-gray-800/50 rounded-2xl p-6 border border-green-700/30 text-center">
+                  <TrendingUp className="w-8 h-8 text-green-400 mx-auto mb-2" />
                   <motion.div
-                    key={`annual-${selectedBudget}-${selectedBusiness}`}
+                    key={`saving-${tripsPerWeek}-${tripDuration}-${selectedTransport}-${selectedSub}`}
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="text-2xl font-bold text-white mb-1"
+                    className="text-2xl font-bold text-green-400 mb-1"
                   >
-                    {formatRub(calculateROI(selectedBudget))}
+                    {monthlySaving > 0 ? `+${monthlySaving.toLocaleString("ru-RU")}` : "0"}
                   </motion.div>
-                  <div className="text-gray-400 text-sm">Выручка/год</div>
+                  <div className="text-gray-400 text-sm">Экономия/мес</div>
                 </div>
               </div>
+
+              <div className="bg-green-900/20 border border-green-700/30 rounded-2xl p-6 text-center">
+                <div className="text-3xl mb-2">🌿</div>
+                <motion.div
+                  key={`co2-${tripsPerWeek}-${tripDuration}`}
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="text-2xl font-bold text-green-400 mb-1"
+                >
+                  {co2Saved} кг
+                </motion.div>
+                <div className="text-gray-400 text-sm">CO₂ сэкономлено в месяц</div>
+              </div>
+
+              <a href="#get-started">
+                <AnimatedButton className="w-full bg-green-500 text-white hover:bg-green-400">
+                  Попробовать бесплатно — 30 минут в подарок
+                </AnimatedButton>
+              </a>
             </div>
           </div>
         </div>

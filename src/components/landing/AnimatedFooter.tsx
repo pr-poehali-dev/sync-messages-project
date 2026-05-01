@@ -27,9 +27,9 @@ export default function AnimatedFooter() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h3 className="text-3xl sm:text-4xl font-bold text-white mb-4">Будьте в курсе трендов</h3>
+            <h3 className="text-3xl sm:text-4xl font-bold text-white mb-4">Узнайте о новых маршрутах первым</h3>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Получайте эксклюзивные инсайты, стратегии развития бренда и советы по росту каждую неделю.
+              Подпишитесь на рассылку — акции, новые зоны покрытия и бонусы для подписчиков.
             </p>
           </motion.div>
 
@@ -78,13 +78,12 @@ export default function AnimatedFooter() {
             className="space-y-8 text-center lg:text-left"
           >
             <div className="group flex justify-center lg:justify-start">
-              <span className="text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent transition-transform duration-300 group-hover:scale-105">
-                Pulse Digital
+              <span className="text-3xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent transition-transform duration-300 group-hover:scale-105">
+                GreenWay
               </span>
             </div>
             <p className="text-gray-400 text-lg leading-relaxed max-w-md mx-auto lg:mx-0">
-              Помогаем творческим профессионалам и предпринимателям создавать сильные бренды,
-              обеспечивающие реальный рост на конкурентном рынке.
+              GreenWay — экологичный транспорт для городской жизни. Электросамокаты и велосипеды в центральных районах города, доступные каждому.
             </p>
 
             {/* Social Links */}
@@ -121,15 +120,15 @@ export default function AnimatedFooter() {
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <h4 className="text-lg font-semibold text-white mb-6">Услуги</h4>
+              <h4 className="text-lg font-semibold text-white mb-6">Тарифы</h4>
               <ul className="space-y-4">
                 {[
-                  "Разработка бренда",
-                  "Цифровой маркетинг",
-                  "Создание контента",
-                  "SEO и аналитика",
-                  "Ведение соцсетей",
-                  "Performance-маркетинг",
+                  "Поминутная аренда",
+                  "Дневной абонемент",
+                  "Недельный абонемент",
+                  "Месячный абонемент",
+                  "Корпоративный тариф",
+                  "Первая поездка бесплатно",
                 ].map((link, index) => (
                   <motion.li
                     key={link}
@@ -160,23 +159,23 @@ export default function AnimatedFooter() {
               <h4 className="text-lg font-semibold text-white mb-6">Контакты</h4>
               <div className="space-y-4">
                 <div className="flex items-center space-x-3 text-gray-400 justify-center sm:justify-start">
-                  <Mail className="h-5 w-5 text-blue-500" />
-                  <span>hello@pulsedigital.ru</span>
+                  <Mail className="h-5 w-5 text-green-500" />
+                  <span>hello@greenway.ru</span>
                 </div>
                 <div className="flex items-center space-x-3 text-gray-400 justify-center sm:justify-start">
-                  <Phone className="h-5 w-5 text-blue-500" />
-                  <span>+7 (495) 123-45-67</span>
+                  <Phone className="h-5 w-5 text-green-500" />
+                  <span>+7 (495) 000-00-00</span>
                 </div>
                 <div className="flex items-center space-x-3 text-gray-400 justify-center sm:justify-start">
-                  <MapPin className="h-5 w-5 text-blue-500" />
-                  <span>Москва, Россия</span>
+                  <MapPin className="h-5 w-5 text-green-500" />
+                  <span>Центральные районы города</span>
                 </div>
               </div>
 
               <div className="mt-8">
                 <a href="#get-started">
-                  <AnimatedButton className="w-full bg-white text-black hover:bg-gray-100">
-                    Начать проект
+                  <AnimatedButton className="w-full bg-green-500 text-white hover:bg-green-400">
+                    Попробовать бесплатно
                   </AnimatedButton>
                 </a>
               </div>
@@ -194,7 +193,7 @@ export default function AnimatedFooter() {
         >
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 text-center sm:text-left">
             <p className="text-gray-500 text-sm">
-              {new Date().getFullYear()} Pulse Digital. Все права защищены.
+              {new Date().getFullYear()} ООО «ГринВей». Все права защищены.
             </p>
             <div className="flex space-x-6 text-sm">
               <a href="#" className="text-gray-500 hover:text-white transition-colors">

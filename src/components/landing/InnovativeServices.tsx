@@ -1,48 +1,54 @@
 import { motion } from "framer-motion"
 import { useState } from "react"
-import { Instagram, Youtube, Shield, CheckCircle, DollarSign } from "lucide-react"
+import { Shield, CheckCircle, Zap } from "lucide-react"
 import AnimatedButton from "./AnimatedButton"
 
 const services = [
   {
-    title: "Таргетированная реклама",
+    title: "Поминутная аренда",
     description:
-      "Стимулируем рост и вовлечение через data-driven рекламу в соцсетях с таргетированными стратегиями для развития бренда.",
+      "Платите только за время в пути. Разблокируйте самокат или велосипед в приложении и наслаждайтесь поездкой — без абонемента и обязательств.",
     mockup: "social",
+    price: "от 5 ₽/мин",
   },
   {
-    title: "Google Ads",
+    title: "Дневной абонемент",
     description:
-      "Достигаем клиентов в нужный момент с Google Ads, привлекая трафик и продажи через таргетированную рекламу.",
+      "Неограниченные поездки в течение дня. Идеально для прогулок, туристических маршрутов или активного выходного дня в городе.",
     mockup: "google-ads",
+    price: "299 ₽/день",
   },
   {
-    title: "Email / SMS",
-    description: "Достигаем клиентов через таргетированный email и SMS маркетинг, стимулируя продажи и лояльность.",
+    title: "Недельный абонемент",
+    description: "Экономичный вариант для тех, кто пользуется GreenWay регулярно. Поездки без ограничений на 7 дней.",
     mockup: "email",
+    price: "799 ₽/неделю",
   },
   {
-    title: "SEO",
+    title: "Месячный абонемент",
     description:
-      "Повышаем видимость в поисковых системах: аудит сайта, анализ ключевых слов и комплексная оптимизация.",
+      "Максимальная выгода для постоянных пользователей. Замените общественный транспорт и сэкономьте на дороге.",
     mockup: "seo",
+    price: "1 990 ₽/месяц",
   },
   {
-    title: "Аналитика",
+    title: "Корпоративный тариф",
     description:
-      "Отслеживаем эффективность и получаем инсайты с комплексной аналитикой для принятия data-driven решений.",
+      "Специальные условия для компаний: парк транспорта для сотрудников, корпоративный кабинет и детальная аналитика поездок.",
     mockup: "analytics",
+    price: "По запросу",
   },
   {
-    title: "Веб-разработка",
+    title: "Первая поездка — бесплатно",
     description:
-      "Создаем сайты любой сложности: от лендингов до крупных порталов, с гибкими тарифами под ваши задачи.",
+      "Зарегистрируйтесь в приложении и получите 30 минут бесплатного времени. Попробуйте GreenWay без риска прямо сейчас!",
     mockup: "web-dev",
     badges: [
-      { icon: <Shield className="w-4 h-4" />, text: "SSL-защита" },
-      { icon: <DollarSign className="w-4 h-4" />, text: "Без абонплаты" },
-      { icon: <CheckCircle className="w-4 h-4" />, text: "Uptime 99.9%" },
+      { icon: <Zap className="w-4 h-4" />, text: "30 мин в подарок" },
+      { icon: <Shield className="w-4 h-4" />, text: "Без карты" },
+      { icon: <CheckCircle className="w-4 h-4" />, text: "Мгновенный доступ" },
     ],
+    price: "0 ₽",
   },
 ]
 
@@ -59,9 +65,9 @@ export default function InnovativeServices() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">Услуги для роста бизнеса</h2>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">Тарифы и абонементы</h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Индивидуальные решения для оптимизации, инноваций и масштабирования.
+            Выберите подходящий формат — от разовой поездки до корпоративного пакета.
           </p>
         </motion.div>
 

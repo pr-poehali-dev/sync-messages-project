@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 import { useState } from "react"
-import { Shield, CheckCircle, Zap } from "lucide-react"
+import { Shield, CheckCircle, Zap, Instagram, Youtube } from "lucide-react"
 import AnimatedButton from "./AnimatedButton"
 
 const services = [
